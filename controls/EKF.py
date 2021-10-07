@@ -23,7 +23,9 @@ class EKF():
         Pdot = A @ self.P + self.P @ A.transpose() + self.model.V
         self.P = self.P + Pdot*self.model.Ts
 
-        K = self.P @ C.transpose() @ np.linalg.inv(C @ self.P @ C.transpose() + self.model.W)
+        S = (C @ self.P @ C.transpose() + self.model.Wd).transpose()
+        K = np.linalg.solve(S, C @ self.P.transpose()).transpose()
 
         self.x_hat = self.x_hat + K @ (z - self.model.get_output(self.x_hat))
         self.P = (np.identity(self.P.shape[0]) - K @ C) @ self.P
+
