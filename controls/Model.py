@@ -55,7 +55,7 @@ class Model:
 
     def get_noisy_model_derivative(self, x, u):
         return self.get_model_derivative(x, u) +                                \
-                rng().multivariate_normal(                                      \
+                np.random.multivariate_normal(                                  \
                     np.zeros(self.V.shape[0]),                                  \
                     self.V,                                                     \
                     size=1                                                      \
@@ -67,7 +67,7 @@ class Model:
 
     def get_noisy_output(self, x):
         return self.get_output(x) +                                             \
-                rng().multivariate_normal(                                      \
+                    np.random.multivariate_normal(                              \
                     np.zeros(self.W.shape[0]),                                  \
                     self.W,                                                     \
                     size=1                                                      \
