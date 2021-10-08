@@ -25,21 +25,22 @@ def MPC(model, xk, x_ref, Q, R):
     for i in range(1, L+1):
         pow_a.append(pow_a[i-1] @ model.Ad)
 
-    A = np.empty((N*(L+1), N))
-    A[0:N][0:N] = np.identity(N)
-    for i in range(0, L+1):
-        A[i*N:(i+1)*N, 0:N] = pow_a[i]
+    A = np.empty((N*L, N))
+    for i in range(0, L):
+        A[i*N:(i+1)*N, 0:N] = pow_a[i+1]
 
-    B = np.zeros((N*(L+1), M*L))
-    for i in range(1, L+1):
-        for j in range(0, i):
-            B[i*N:(i+1)*N, j*M:(j+1)*M] = pow_a[i-j-1] @ model.Bd
+    B = np.zeros((N*L, M*L))
+    B[0:N, 0:M] = model.Bd
+    for i in range(1, L):
+        for j in range(0, i+1):
+            if (j == 0):
+                B[i*N:(i+1)*N, j*M:(j+1)*M] = pow_a[i] @ model.Bd
+            else:
+                B[i*N:(i+1)*N, j*M:(j+1)*M] = B[(i-1)*N:i*N, (j-1)*M:j*M]
 
     Q_hat = np.kron(np.eye(L+1), Q)
     R_hat = np.kron(np.eye(L), R)
 
-    A = A[N:,:]
-    B = B[N:,:]
     Q_hat = np.kron(np.eye(L), Q)
     R_hat = np.kron(np.eye(L), R)
 
