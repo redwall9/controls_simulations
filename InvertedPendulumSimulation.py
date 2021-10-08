@@ -64,7 +64,7 @@ Q[2][2] = 10
 Q[3][3] = 1
 Q[4][4] = 0
 
-R = np.identity(1)
+R = np.identity(1)*10
 
 # initial state covariance estimate for EKF
 P0 = np.identity(4) * 0.1
@@ -84,8 +84,8 @@ u_actual = np.empty((1, sim_length - L))
 
 # generate the trajectory that we want to follow
 for i in range(0, sim_length - L):
-    x_ref[0, i] = .125 * math.sin(math.pi * Ts * i / 5)
-    x_ref[1, i] = .125 * math.pi / 5 * math.cos(math.pi * Ts * i / 5)
+    x_ref[0, i] = 0.5 * math.sin(math.pi * Ts * i / 5)
+    x_ref[1, i] = 0.5 * math.pi / 5 * math.cos(math.pi * Ts * i / 5)
     x_ref[2, i] = 0
     x_ref[3, i] = 0
     x_ref[4, i] = 0
